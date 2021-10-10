@@ -1,0 +1,13 @@
+<?xml version="1.0"?> 
+<Client_configuration>
+    <command>
+        <ON>0x12</ON>
+        <OFF>0x13</OFF>
+        <COLOR>0x20</COLOR>
+    </command>
+    <net_param>
+        <port>9999</port>
+        <host>127.0.0.1</host>
+        <buf_size remined="bytes">1024</buf_size>
+    </net_param>
+</Client_configuration>
