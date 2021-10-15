@@ -17,6 +17,8 @@ def action(command_type, message, root):
     if command_type == 'ON':
         if condition:
             # create the lantern area
+            # Зачем создавать новое окно? Логичней было бы создать
+            # одно глобальное окно и обновлять его цвет, или прятать при необходимости.
             root = Tk()
             root.title = "lantern"
             frame = Frame(root)
@@ -33,16 +35,20 @@ def action(command_type, message, root):
             root.update()
         else:
             logging.warning("You tried to command 'ON', but lantern is already running")
+    # elif
     if command_type == 'OFF':
         if condition:
             logging.warning("You tried to command 'OFF', but lantern isn't running")
         else:
+            # Всю работу с окнами и графикой надо было вынести в отдельный класс.
             root.destroy()
+    # elif
     if command_type == 'COLOR':
         if condition:
             logging.warning("You tried to command 'COLOR', but lantern isn't running")
         else:
             # get color values
+            # Парсинг сообщения размазан по двум файлам. Сложно отлаживать и поддерживать.
             length = int.from_bytes(message[1:3], "big")
             value = message[3:3 + length]
             red = value[0]
@@ -54,6 +60,7 @@ def action(command_type, message, root):
             light[:, :, 2] = blue
             img = Image.fromarray(light, 'RGB')
             # add image on figure
+            # Копипаста.
             canvas = Canvas(root, height=200, width=200)
             photo = ImageTk.PhotoImage(img)
             canvas.create_image(0, 0, anchor='nw', image=photo)

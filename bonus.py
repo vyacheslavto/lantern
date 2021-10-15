@@ -4,6 +4,8 @@ sys.setrecursionlimit(100)  # глубина рекурсии < 10
 
 # приведение словаря к flatten без сторонних библиотек
 def flattening(dd, sep='.', prefix=''):
+    # Запутанный код. Но выглядит интересно.
+    # Очень похож на https://stackoverflow.com/a/19647596
     return {prefix+sep+k if prefix else k: v
             for kk, vv in dd.items()
             for k, v in flattening(vv, sep, kk).items()

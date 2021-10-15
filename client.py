@@ -30,6 +30,8 @@ def xml_parse(xml_file):
 
 
 def get_key(val, _dict):
+    # Линейный поиск -- это медленно при большом наборе команд.
+    # Если заранее сделать обратное отображение, то искать данные можно в одну строку.
     for key, value in _dict.items():
         if val == value:
             return key
@@ -43,9 +45,11 @@ def get_request():
     while True:
         try:
             stream = yield TCPClient().connect(net_setting['host'], int(net_setting['port']))
+            # Чтение с partial=True может возвращать по 1-му байту за раз,
+            # в результате чего весь следующий код сломается.
             message = yield stream.read_bytes(int(net_setting['buf_size']), partial=True)
             stream.close()
-            # def here
+            # message уже имеет тип bytes, эквивалентный код: get_key(message[0], command)
             command_type = get_key(bytes([message[0]]), command)
             if command_type:
                 logger.warning(" Correct command: "+str(command_type))
